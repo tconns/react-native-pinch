@@ -45,10 +45,9 @@ public class RNPinch extends ReactContextBaseJavaModule {
     private String displayName = null;
     private String version = null;
     private String versionCode = null;
-
-    public RNPinch(ReactApplicationContext reactContext) {
+    public RNPinch(ReactApplicationContext reactContext, String ssl_key) {
         super(reactContext);
-        httpUtil = new HttpUtil();
+        httpUtil = new HttpUtil(ssl_key);
         try {
             PackageManager pManager = reactContext.getPackageManager();
             packageName = reactContext.getPackageName();
@@ -98,10 +97,10 @@ public class RNPinch extends ReactContextBaseJavaModule {
                     request.headers = JsonUtil.convertReadableMapToJson(opts.getMap(OPT_HEADER_KEY));
                 }
                 if (opts.hasKey(OPT_SSL_PINNING_KEY)) {
-                    if (opts.getMap(OPT_SSL_PINNING_KEY).hasKey("cert")) {
-                        String fileName = opts.getMap(OPT_SSL_PINNING_KEY).getString("cert");
+                    String fileName = opts.getMap(OPT_SSL_PINNING_KEY).getString("cert");
+                    if (fileName != null) {
                         request.certFilenames = new String[]{fileName};
-                    } else if (opts.getMap(OPT_SSL_PINNING_KEY).hasKey("certs")) {
+                    } else {
                         ReadableArray certsStrings = opts.getMap(OPT_SSL_PINNING_KEY).getArray("certs");
                         String[] certs = new String[certsStrings.size()];
                         for (int i = 0; i < certsStrings.size(); i++) {

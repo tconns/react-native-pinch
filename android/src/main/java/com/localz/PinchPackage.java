@@ -12,6 +12,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class PinchPackage implements ReactPackage {
+    private String SSL_KEY="";
+    public PinchPackage(String ssl_key){
+        SSL_KEY = ssl_key;
+    }
 
     public List<Class<? extends JavaScriptModule>> createJSModules() {
         return Collections.emptyList();
@@ -26,7 +30,7 @@ public class PinchPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(
             ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new RNPinch(reactContext));
+        modules.add(new RNPinch(reactContext,SSL_KEY));
         return modules;
     }
 

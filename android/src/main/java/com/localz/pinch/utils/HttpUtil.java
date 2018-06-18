@@ -30,6 +30,11 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class HttpUtil {
     private static final String DEFAULT_CONTENT_TYPE = "application/json";
+    private String SSL_KEY="";
+
+    public HttpUtil(String ssl_key){
+        SSL_KEY=ssl_key;
+    }
 
     private String getResponseBody(InputStream responseStream) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(responseStream));
@@ -80,7 +85,7 @@ public class HttpUtil {
 
         connection = (HttpsURLConnection) url.openConnection();
         if (request.certFilenames != null) {
-            connection.setSSLSocketFactory(KeyPinStoreUtil.getInstance(request.certFilenames).getContext().getSocketFactory());
+            connection.setSSLSocketFactory(KeyPinStoreUtil.getInstance(request.certFilenames,SSL_KEY).getContext().getSocketFactory());
         }
         connection.setRequestMethod(method);
 
